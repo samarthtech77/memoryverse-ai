@@ -1,10 +1,10 @@
 const seedDocuments = [
-  { id: 'cert-python', title: 'Python for Data Science Certificate', category: 'Certification', year: 2023, organisation: 'DataCamp', skills: ['Python', 'Pandas', 'Data Analysis'], summary: 'Completed a Python data analysis certification with practical assessment evidence.', type: 'PDF' },
-  { id: 'club-lead', title: 'Data Science Club Lead', category: 'Achievement', year: 2024, organisation: 'University DS Club', skills: ['Leadership', 'Python', 'Machine Learning'], summary: 'Led the data science club and coordinated student machine learning workshops.', type: 'DOCX' },
-  { id: 'vision-project', title: 'Plant Disease Detection System', category: 'Project', year: 2025, organisation: 'Personal Portfolio', skills: ['Python', 'Computer Vision', 'TensorFlow'], summary: 'Built a computer vision model that identifies plant diseases from leaf images.', type: 'PDF' },
-  { id: 'internship', title: 'AI/ML Engineering Internship', category: 'Internship', year: 2025, organisation: 'Nexa Analytics', skills: ['Python', 'Machine Learning', 'SQL'], summary: 'Internship evidence for an AI/ML engineering role using prediction pipelines.', type: 'PDF' },
-  { id: 'resume', title: 'Alex Sharma Resume — 2026', category: 'Academic', year: 2026, organisation: 'Alex Sharma', skills: ['Python', 'Machine Learning', 'React', 'SQL'], summary: 'Latest resume covering education, technical skills, projects, and experience.', type: 'PDF' },
-  { id: 'memoryverse', title: 'MemoryVerse AI Project Report', category: 'Project', year: 2026, organisation: 'Hackathon Portfolio', skills: ['RAG', 'Semantic Search', 'JavaScript'], summary: 'Project report for an AI-powered digital identity system.', type: 'DOCX' }
+  { id: 'cert-python', title: 'Example: Python Data Science Certificate', category: 'Certification', year: 2023, organisation: 'Demo profile', skills: ['Python', 'Pandas', 'Data Analysis'], summary: 'Demo insight only. Upload your own certificate to preserve and open the original.', type: 'DEMO', isDemo: true },
+  { id: 'club-lead', title: 'Example: Data Science Club Lead', category: 'Achievement', year: 2024, organisation: 'Demo profile', skills: ['Leadership', 'Python', 'Machine Learning'], summary: 'Demo insight only. Upload your own achievement evidence to preserve its original.', type: 'DEMO', isDemo: true },
+  { id: 'vision-project', title: 'Example: Plant Disease Detection', category: 'Project', year: 2025, organisation: 'Demo profile', skills: ['Python', 'Computer Vision', 'TensorFlow'], summary: 'Demo insight only. Upload your own project report for a real source link.', type: 'DEMO', isDemo: true },
+  { id: 'internship', title: 'Example: AI/ML Internship', category: 'Internship', year: 2025, organisation: 'Demo profile', skills: ['Python', 'Machine Learning', 'SQL'], summary: 'Demo insight only. Upload your own internship letter for a real source link.', type: 'DEMO', isDemo: true },
+  { id: 'resume', title: 'Example: Student Resume', category: 'Academic', year: 2026, organisation: 'Demo profile', skills: ['Python', 'Machine Learning', 'React', 'SQL'], summary: 'Demo insight only. Upload your own resume to preserve the original document.', type: 'DEMO', isDemo: true },
+  { id: 'memoryverse', title: 'Example: MemoryVerse Project Report', category: 'Project', year: 2026, organisation: 'Demo profile', skills: ['RAG', 'Semantic Search', 'JavaScript'], summary: 'Demo insight only. Upload your actual project report to make it a source record.', type: 'DEMO', isDemo: true }
 ];
 
 let documents = [...seedDocuments];
@@ -17,8 +17,8 @@ const byId = id => documents.find(document => document.id === id);
 const viewTitle = {home:'Good evening, Alex.', library:'Memory library', connections:'Connection engine', timeline:'Journey timeline'};
 
 function iconFor(category) { return {Certification:'✦', Internship:'▣', Project:'◈', Achievement:'★', Academic:'▤'}[category] || '▧'; }
-function saveDocuments() { localStorage.setItem('memoryverse-documents', JSON.stringify(documents.filter(document => !document.isSeed))); }
-function restoreDocuments() { try { documents = [...seedDocuments, ...JSON.parse(localStorage.getItem('memoryverse-documents') || '[]')]; } catch { documents = [...seedDocuments]; } }
+function saveDocuments() { localStorage.removeItem('memoryverse-documents'); }
+function restoreDocuments() { documents = [...seedDocuments]; }
 function renderMetrics() {
   const skills = new Set(documents.flatMap(document => document.skills));
   $('#metrics').innerHTML = [[documents.length, 'memories understood'], [skills.size, 'skills connected'], [connections().length, 'evidence links'], [new Set(documents.map(document => document.year)).size, 'years of growth']].map(([number,label]) => `<article class="metric"><strong>${number}</strong><span>${label}</span></article>`).join('');
@@ -31,7 +31,9 @@ function card(document) {
   element.querySelector('h3').textContent = document.title;
   element.querySelector('.document-meta').textContent = `${document.organisation} · ${document.year}`;
   element.querySelector('.skill-tags').innerHTML = document.skills.slice(0, 3).map(skill => `<span>${skill}</span>`).join('');
-  element.querySelector('.source-button').addEventListener('click', () => openSource(document));
+  const sourceButton = element.querySelector('.source-button');
+  sourceButton.textContent = document.isDemo ? 'Demo insight — upload your original' : 'Open original ↗';
+  sourceButton.addEventListener('click', () => openSource(document));
   return element;
 }
 function renderDocuments() {
@@ -44,6 +46,11 @@ function renderDocuments() {
   document.querySelectorAll('[data-filter]').forEach(button => button.addEventListener('click', () => { activeFilter = button.dataset.filter; renderDocuments(); }));
 }
 function openSource(document) {
+  if (document.isDemo) {
+    $('#upload-status').textContent = 'This is a demo insight, not a source file. Upload your own original document while running python server.py.';
+    showView('library');
+    return;
+  }
   if (document.sourceUrl) { window.open(document.sourceUrl, '_blank', 'noopener'); return; }
   if (document.url) { window.open(document.url, '_blank', 'noopener'); return; }
   const content = `MemoryVerse source preview\n\n${document.title}\n${document.summary}\n\nCategory: ${document.category}\nSkills: ${document.skills.join(', ')}\nYear: ${document.year}`;
@@ -103,15 +110,19 @@ function inferDocument(file) {
   return { id:`upload-${Date.now()}-${Math.random().toString(16).slice(2)}`, title:filename, category:category?.[1] ? category[0] : 'Academic', year:yearMatch ? Number(yearMatch[0]) : new Date().getFullYear(), organisation:'Uploaded evidence', skills:skills.length ? skills : ['New evidence'], summary:`Locally indexed from ${file.name}. Add a descriptive filename with skills or category terms for richer automatic understanding.`, type:file.name.split('.').pop().toUpperCase(), url };
 }
 async function handleFiles(files) {
+  const status = $('#upload-status'); status.textContent = 'Saving and analyzing your original file…';
   const uploaded = await Promise.all(Array.from(files).map(async file => {
     try {
       const formData = new FormData(); formData.append('file', file);
       const response = await fetch('/api/upload', { method: 'POST', body: formData });
       if (!response.ok) throw new Error('Upload failed');
       return (await response.json()).document;
-    } catch { return inferDocument(file); }
+    } catch { return null; }
   }));
-  documents.push(...uploaded); saveDocuments(); refresh(); activeFilter='All'; showView('library');
+  const saved = uploaded.filter(Boolean);
+  if (!saved.length) { status.textContent = 'Upload failed. Start the project with python server.py, then try again.'; return; }
+  documents.push(...saved); saveDocuments(); refresh(); activeFilter='All'; showView('library');
+  status.textContent = `${saved.length} original file${saved.length === 1 ? '' : 's'} saved permanently in the local Python data folder.`;
 }
 async function loadBackendDocuments() {
   try {
