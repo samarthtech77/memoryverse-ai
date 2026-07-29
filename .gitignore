@@ -1,0 +1,24 @@
+# Operating system files
+.DS_Store
+Thumbs.db
+
+# Editor settings
+.vscode/
+.idea/
+
+# Local environment files
+.env
+.env.*
+
+# Dependency folders and build outputs
+node_modules/
+dist/
+build/
+
+# Python server artifacts
+__pycache__/
+*.py[cod]
+
+# Runtime data created by the local Python backend
+data/documents.json
+data/uploads/

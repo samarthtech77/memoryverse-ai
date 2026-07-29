@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#091326" />
+    <title>MemoryVerse | Your academic story, connected</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="ambient ambient-one"></div><div class="ambient ambient-two"></div>
+    <main class="app-shell">
+      <aside class="sidebar">
+        <a class="brand" href="#"><span class="brand-mark">M</span><span>Memory<span>Verse</span></span></a>
+        <p class="tagline">Your academic story,<br />connected.</p>
+        <nav id="navigation" aria-label="Main navigation">
+          <button class="nav-item active" data-view="home">⌂ <span>Overview</span></button>
+          <button class="nav-item" data-view="library">▣ <span>Memory library</span></button>
+          <button class="nav-item" data-view="connections">⌘ <span>Connections</span></button>
+          <button class="nav-item" data-view="timeline">◷ <span>Journey timeline</span></button>
+        </nav>
+        <div class="sidebar-note"><span class="pulse"></span> Local-first · No API key</div>
+      </aside>
+      <section class="content">
+        <header class="topbar"><div><p class="eyebrow">DIGITAL IDENTITY SYSTEM</p><h1 id="page-title">Good evening, Alex.</h1></div><button class="profile" title="Local demo profile">AS</button></header>
+        <section id="home" class="view active">
+          <div class="hero"><div><p class="eyebrow accent">YOUR PERSONAL KNOWLEDGE VAULT</p><h2>Everything you’ve achieved.<br /><em>Finally connected.</em></h2><p>MemoryVerse understands your documents, builds the links, and finds the proof when you need it.</p></div><div class="hero-orbit" aria-hidden="true"><span>✦</span><i></i><b></b></div></div>
+          <section class="command-card"><label for="ask-input">Ask your memory</label><div class="command-input"><span>⌕</span><input id="ask-input" placeholder="Try: Show my AI projects" /><button id="ask-button">Ask</button></div><div class="suggestions"><button data-query="Show my AI projects">AI projects</button><button data-query="Show all my certificates">Certificates</button><button data-query="What supports my Python skill?">Python evidence</button></div></section>
+          <section id="answer-panel" class="answer-panel hidden" aria-live="polite"></section>
+          <section class="metrics" id="metrics"></section>
+          <section class="section-heading"><div><p class="eyebrow">RECENTLY UNDERSTOOD</p><h2>Your memory, at a glance</h2></div><button class="text-button" data-go="library">View library →</button></section>
+          <section class="document-grid" id="recent-documents"></section>
+        </section>
+        <section id="library" class="view"><section class="page-intro"><p class="eyebrow">ORIGINAL FILES, INTELLIGENTLY ORGANIZED</p><h2>Memory library</h2><p>Upload files and MemoryVerse will build searchable records from their content and names.</p></section><section class="upload-card"><div><strong>Drop a document into your journey</strong><p>PDF, DOCX, images, TXT, or any supporting evidence.</p></div><label class="upload-button">Upload document<input id="file-input" type="file" multiple hidden /></label></section><div class="filters" id="filters"></div><section class="document-grid full" id="library-documents"></section></section>
+        <section id="connections" class="view"><section class="page-intro"><p class="eyebrow">EVIDENCE, NOT GUESSWORK</p><h2>Connection engine</h2><p>Every link is explained using overlapping skills, organisations, dates, or source evidence.</p></section><section class="graph-card"><div id="skill-map" class="skill-map"></div></section><section class="connection-list" id="connection-list"></section></section>
+        <section id="timeline" class="view"><section class="page-intro"><p class="eyebrow">YOUR GROWTH, MADE VISIBLE</p><h2>Journey timeline</h2><p>Milestones are sorted from dates found in your memory.</p></section><section class="timeline-card" id="timeline-list"></section></section>
+      </section>
+    </main>
+    <template id="document-template"><article class="document-card"><div class="card-top"><span class="file-icon"></span><span class="category-pill"></span></div><h3></h3><p class="document-meta"></p><div class="skill-tags"></div><button class="source-button">Open original ↗</button></article></template>
+    <script src="app.js"></script>
+  </body>
+</html>
